@@ -13,7 +13,7 @@
     <thead>
         <td id>Code</td><td>Name</td><td>Start time</td><td>End time</td><td>Day of the Week</td>
     </thead>
-    <tbody id="s_row">
+    <tbody>
     </tbody>
 </table>
 
@@ -85,7 +85,7 @@
     }
 
     function refresh_table() {
-        // your codes here
+        $('tbody').children().remove()
     }
     $.ajax({
         url: '/sche_select.jsp',
@@ -100,6 +100,24 @@
         error: function(){
             alert('error');
         }
+    });
+    searchInput.change(function(){
+        console.log("The text has been changed.");
+        $.ajax({
+            url: '/sche_select.jsp',
+            type: 'POST',
+            data: {search: searchInput.val()},
+            success: function(res){
+                var result = JSON.parse(res);
+                refresh_table();
+                for(var i= 0; i< result.length; i++){
+                    append_tr(result[i]); 
+                }
+            },
+            error: function(){
+                alert('error');
+            }
+        });
     });
     
     $('#submit_btn').click(function(){

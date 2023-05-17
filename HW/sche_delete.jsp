@@ -1,4 +1,4 @@
-<%@ include file="db_open.jsp" %>
+<%@ include file="header.jsp" %>
 <%@ include file="session_check.jsp" %>
 <%@ page import="java.util.*,java.text.*" %>
 <%@ page import="org.json.simple.*"%>
@@ -15,7 +15,6 @@
     pstmt = con.prepareStatement(qry);
     pstmt.setString(1, code);
     pstmt.executeUpdate();
-    System.out.println("sned back");
     out.print(return_arr);
 %>
 <%@ include file="footer.jsp" %>

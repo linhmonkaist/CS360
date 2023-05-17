@@ -27,7 +27,6 @@
         pstmt.setString(2, user_password);
         pstmt.executeUpdate();
         response.sendRedirect("/login.jsp");
-        System.out.println("insert to user"); 
     }
     qry= "select * from user";
     pstmt = con.prepareStatement(qry);
@@ -36,7 +35,7 @@
     while(rs.next()){
         us= rs.getString(1);
         pw= rs.getString(2);
-        System.out.println( us + "pw: " + pw); 
+        System.out.println( us + " pw: " + pw); 
     }
 %>
 <%@ include file="footer.jsp" %>

@@ -4,18 +4,15 @@
 <%@ page import="org.json.simple.*"%>
 <%@ page import="java.util.ArrayList"%>
 <%  
-    
     String start = request.getParameter("start");
     String end = request.getParameter("end");
     String name = request.getParameter("name");
     String dow = request.getParameter("dow");
-    System.out.println(name); 
-    String qry= "select start, end from schedule where user_id= ? and name= ? and dow= ?";
+    String qry= "select start, end from schedule where user_id= ? and dow= ?";
     PreparedStatement pstmt;
     pstmt = con.prepareStatement(qry);
     pstmt.setString(1, user_id);
-    pstmt.setString(2, name);
-    pstmt.setString(3, dow);
+    pstmt.setString(2, dow);
     int exist_start, exist_end, cur_start, cur_end; 
     ResultSet rs= pstmt.executeQuery();
     Boolean check= true; 
@@ -24,11 +21,15 @@
     while(rs.next()){
         exist_start= Integer.parseInt(rs.getString(1)); 
         exist_end= Integer.parseInt(rs.getString(2)); 
-        if (exist_start <= cur_start && cur_start <= exist_end){
+        if ((exist_start <= cur_start && cur_start < exist_end)){
             check= false; 
             break; 
         }
-        if (exist_start <= cur_end && cur_end <= exist_end){
+        if ((exist_start < cur_end && cur_end <= exist_end)){
+            check= false; 
+            break; 
+        }
+        if ((exist_end < cur_end && cur_start < exist_start)){
             check= false; 
             break; 
         }
@@ -37,7 +38,6 @@
     JSONObject obj = new JSONObject();
     if (check == false){
         obj.put("res", "f"); 
-        System.out.println("insert fail"); 
         arr.add(obj);
     } else {
         obj.put("res", "t");
@@ -58,7 +58,6 @@
         pstmt.setString(4, start);
         pstmt.setString(5, end);
         rs= pstmt.executeQuery();
-        System.out.println("schedule inserted");
         JSONObject o = new JSONObject();
         while(rs.next()){
             String cd= rs.getString(1);  

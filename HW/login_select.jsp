@@ -14,11 +14,9 @@
         c= c + 1;
     }
     if (c == 1){
-        System.out.println("login sucess"); 
         session.setAttribute("id", user_id);
         response.sendRedirect("/index.jsp");
     } else {
-        System.out.println("login fail"); 
         response.sendRedirect("/login.jsp");
     }
 %>
